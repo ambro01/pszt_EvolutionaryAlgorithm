@@ -15,7 +15,7 @@ public class Simulation1Plus1 {
 	double sigmaMin;
 	
 	public Simulation1Plus1(int dimension, double sigmaMin){
-		sigma = 1; // odchylenie standardowe
+		sigma = 10; // odchylenie standardowe
 		fi = 0; // liczba wybranych y-kow w ciagu ostatnich m iteracji
 		mIterations = 10; // liczba iteracji po ktorych odbywa sie uaktualnienie wartosc sigmy
 		kIterations = 0; // kolejna iteracja
@@ -84,14 +84,19 @@ public class Simulation1Plus1 {
 			return false;
 	}
 	
-	public void runSimulation(){
+	public Individual runSimulation(){
 		firstGeneration();
-		System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
-		System.out.println(this.individualFirst.getGens().get(0).getX());
+		//System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
+		//System.out.println(this.individualFirst.getGens().get(0).getX());
 		do{
 			nextGeneration();
-			System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
-			System.out.println(this.individualFirst.getGens().get(0).getX());
+			//System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
+			//System.out.println(this.individualFirst.getGens().get(0).getX());
 		} while(!checkFinish());
+		individualFirst.setFinalFunctionValue(Global.minimalizeFunction(individualFirst, dimension));
+		//System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
+		
+		return individualFirst;
 	}
+	
 }
