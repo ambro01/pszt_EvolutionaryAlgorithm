@@ -20,7 +20,7 @@ public class Simulation1Plus1 {
 		mIterations = 10; // liczba iteracji po ktorych odbywa sie uaktualnienie wartosc sigmy
 		kIterations = 0; // kolejna iteracja
 		c1 = 0.82; //czynnik modyfikujacy sigme
-		c2 = 0.12; // czynnik modyfikujacy sigme
+		c2 = 1.2; // czynnik modyfikujacy sigme
 		this.dimension = dimension;
 		this.sigmaMin = sigmaMin;
 	}
@@ -58,7 +58,7 @@ public class Simulation1Plus1 {
 	}
 	
 	public void selectBetterIndividual(Individual individualSecond){
-		if(Global.minimalizeFunction(individualFirst, dimension) > Global.minimalizeFunction(individualSecond, dimension))
+		if(Global.minimalizeFunction(individualFirst, dimension) < Global.minimalizeFunction(individualSecond, dimension))
 			changeSigma();
 		else{
 			individualFirst = individualSecond;
@@ -69,10 +69,11 @@ public class Simulation1Plus1 {
 	
 	public void changeSigma(){
 		if (kIterations % mIterations == 0){
-			if(fi < 0.2)
+			if(fi/mIterations < 0.2)
 				sigma = c1 * sigma;
-			else if(fi > 0.2)
+			else if(fi/mIterations > 0.2)
 				sigma = c2 * sigma;
+			fi = 0;
 		}
 	}
 	
@@ -86,9 +87,11 @@ public class Simulation1Plus1 {
 	public void runSimulation(){
 		firstGeneration();
 		System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
+		System.out.println(this.individualFirst.getGens().get(0).getX());
 		do{
 			nextGeneration();
 			System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
+			System.out.println(this.individualFirst.getGens().get(0).getX());
 		} while(!checkFinish());
 	}
 }

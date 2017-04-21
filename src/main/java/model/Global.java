@@ -36,13 +36,9 @@ public class Global {
 		
 		if (individual.getGens().size() != dimension)
 			return 0;
-		
-		if (dimension == 2) {
-			for (Gen gen : individual.getGens()){
-				f = f + Math.pow(Math.sin(gen.getX()), 2);
-			}
+		for (Gen gen : individual.getGens()){
+			f = f + Math.pow(gen.getX(), 2);
 		}
-		
 		return f;
 	}
 }
