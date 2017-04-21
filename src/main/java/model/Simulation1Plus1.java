@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Simulation1Plus1 {
 	Individual individualFirst;
-	Individual individualSecond;
 	int dimension;
 	double sigma;
 	int fi;
@@ -15,17 +14,18 @@ public class Simulation1Plus1 {
 	double c2;
 	double sigmaMin;
 	
-	public Simulation1Plus1(){
-		sigma = 1;
-		fi = 0;
-		mIterations = 10;
-		kIterations = 0;
-		c1 = 0.82;
-		c2 = 0.12;
+	public Simulation1Plus1(int dimension, double sigmaMin){
+		sigma = 1; // odchylenie standardowe
+		fi = 0; // liczba wybranych y-kow w ciagu ostatnich m iteracji
+		mIterations = 10; // liczba iteracji po ktorych odbywa sie uaktualnienie wartosc sigmy
+		kIterations = 0; // kolejna iteracja
+		c1 = 0.82; //czynnik modyfikujacy sigme
+		c2 = 0.12; // czynnik modyfikujacy sigme
+		this.dimension = dimension;
+		this.sigmaMin = sigmaMin;
 	}
 	
 	public void firstGeneration(){
-		
 		ArrayList<Gen> gens = new ArrayList<Gen>();
 		Random r = new Random();
 		double x; 
@@ -41,6 +41,7 @@ public class Simulation1Plus1 {
 	}
 	
 	public void nextGeneration(){
+		Individual individualSecond;
 		ArrayList<Gen> gens = new ArrayList<Gen>();
 		Random r = new Random();
 		
@@ -51,9 +52,12 @@ public class Simulation1Plus1 {
 		}
 		
 		individualSecond = new Individual(gens);
+		
+		selectBetterIndividual(individualSecond);
+		
 	}
 	
-	public void selectBetterIndividual(){
+	public void selectBetterIndividual(Individual individualSecond){
 		if(Global.minimalizeFunction(individualFirst, dimension) > Global.minimalizeFunction(individualSecond, dimension))
 			changeSigma();
 		else{
@@ -72,8 +76,19 @@ public class Simulation1Plus1 {
 		}
 	}
 	
-	public void checkFinish(){
-	//	if (sigma < sigmaMin)
-			
+	public boolean checkFinish(){
+		if (sigma < sigmaMin)
+			return true;
+		else
+			return false;
+	}
+	
+	public void runSimulation(){
+		firstGeneration();
+		System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
+		do{
+			nextGeneration();
+			System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
+		} while(!checkFinish());
 	}
 }

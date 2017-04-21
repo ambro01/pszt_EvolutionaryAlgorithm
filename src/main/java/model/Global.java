@@ -30,4 +30,19 @@ public class Global {
 		
 		return f;
 	}
+	
+	static public double testFunction(Individual individual, int dimension){
+		double f = 0;
+		
+		if (individual.getGens().size() != dimension)
+			return 0;
+		
+		if (dimension == 2) {
+			for (Gen gen : individual.getGens()){
+				f = f + Math.pow(Math.sin(gen.getX()), 2);
+			}
+		}
+		
+		return f;
+	}
 }
