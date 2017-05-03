@@ -1,6 +1,5 @@
 package model;
 import model.Individual;
-import java.lang.*;
 
 public class Global {
 	
@@ -28,6 +27,7 @@ public class Global {
 		
 		f = product + 0.01 * sum;
 		
+		individual.setFinalFunctionValue(f);
 		return f;
 	}
 	

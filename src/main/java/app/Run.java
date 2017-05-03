@@ -5,10 +5,11 @@ import model.Gen;
 import model.Individual;
 
 public class Run {
-
+/*
 	public static void main(String[] args) {
+		
 		MyRunnable myRunnable = new MyRunnable();
-		Thread [] threads = new Thread[100];
+		Thread [] threads = new Thread[1];
 		
 		for(int i = 0; i < threads.length; ++i){
 			threads[i] = new Thread(myRunnable);
@@ -32,5 +33,5 @@ public class Run {
 			System.out.println(gen.getX());
 		}
 	}
-
+	*/
 }
