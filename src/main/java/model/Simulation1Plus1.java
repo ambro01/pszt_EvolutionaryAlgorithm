@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.ArrayList;
 
 public class Simulation1Plus1 extends Simulation{
-	Population population;
 	double sigma;
 	int fi;
 	int mIterations;
@@ -12,21 +11,21 @@ public class Simulation1Plus1 extends Simulation{
 	double c2;
 	double sigmaMin;
 	
-	public Simulation1Plus1(int dimension, double sigma0, double sigmaMin, int it){
+	public Simulation1Plus1(int dimension, double sigma0, double sigmaMin, int it, int m, double c1, double c2){
 		sigma_0 = sigma0;
 		sigma = sigma_0; // odchylenie standardowe
 		fi = 0; // liczba wybranych y-kow w ciagu ostatnich m iteracji
-		mIterations = 10; // liczba iteracji po ktorych odbywa sie uaktualnienie wartosc sigmy
+		mIterations = m; // liczba iteracji po ktorych odbywa sie uaktualnienie wartosc sigmy
 		kIterations = 0; // kolejna iteracja
-		c1 = 0.82; //czynnik modyfikujacy sigme
-		c2 = 1.2; // czynnik modyfikujacy sigme
-		this.dimension = dimension;
+		this.c1 = c1; //czynnik modyfikujacy sigme
+		this.c2 = c2; // czynnik modyfikujacy sigme
+		super.dimension = dimension;
 		this.sigmaMin = sigmaMin;
 		super.iterationsLimit = it;
 	}
 	
 	public void firstGeneration(){
-		population = new Population();
+		populationP = new Population();
 		ArrayList<Gen> gens = new ArrayList<Gen>();
 		Random r = new Random();
 		double x; 
@@ -37,7 +36,7 @@ public class Simulation1Plus1 extends Simulation{
 			x = Global.rangeMin + (Global.rangeMax - Global.rangeMin) * r.nextDouble();
 			gens.add(new Gen(x));
 		}
-		population.addIndividual(new Individual(gens));
+		populationP.addIndividual(new Individual(gens));
 	}
 	
 	public void nextGeneration(){
@@ -47,7 +46,7 @@ public class Simulation1Plus1 extends Simulation{
 		
 		++kIterations;
 		
-		for(Gen gen : population.getIndividuals().getFirst().getGens()){
+		for(Gen gen : populationP.getIndividuals().getFirst().getGens()){
 			gens.add(new Gen(gen.getX() + this.sigma * r.nextGaussian())); 
 		}
 		
@@ -56,11 +55,11 @@ public class Simulation1Plus1 extends Simulation{
 	}
 	
 	public void selectBetterIndividual(Individual individualSecond){
-		if(Global.minimalizeFunction(population.getIndividuals().getFirst(), dimension) < Global.minimalizeFunction(individualSecond, dimension))
+		if(Global.minimalizeFunction(populationP.getIndividuals().getFirst(), dimension) < Global.minimalizeFunction(individualSecond, dimension))
 			changeSigma();
 		else{
-			population.getIndividuals().removeFirst();
-			population.addIndividual(individualSecond);
+			populationP.getIndividuals().removeFirst();
+			populationP.addIndividual(individualSecond);
 			++fi;
 			changeSigma();
 		}
@@ -83,7 +82,7 @@ public class Simulation1Plus1 extends Simulation{
 			return false;
 	}
 	
-	public Individual runSimulation(){
+	public void runSimulation(){
 		firstGeneration();
 		//System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
 		//System.out.println(this.individualFirst.getGens().get(0).getX());
@@ -94,7 +93,6 @@ public class Simulation1Plus1 extends Simulation{
 		} while(!checkFinish());
 		//population.getIndividuals().getFirst().setFinalFunctionValue(Global.minimalizeFunction(population.getIndividuals().getFirst(), dimension));
 		//System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
-		return population.getIndividuals().getFirst();
 	}
 	
 }

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import controllers.MyComparator;
-
 public class SimulationMiLambda extends Simulation{
 	private int lambda; // ilosc osobnokow w poczatkowej sekwencji
 	private int mi; // ilosc osobnikow utrzymywanych w kazdej populacji
@@ -82,13 +80,11 @@ public class SimulationMiLambda extends Simulation{
 			return false;
 	}
 	
-	public Individual runSimulation(){
+	public void runSimulation(){
 		firstGeneration();
 		do{
 			nextGeneration();
 		} while(!checkFinish());
-		
-		return populationP.getIndividuals().getFirst();
 	}
 	
 	public void nextGeneration(){

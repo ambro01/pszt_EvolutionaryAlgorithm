@@ -1,8 +1,6 @@
-package controllers;
+package model;
 
 import java.util.Comparator;
-
-import model.Individual;
 
 public class MyComparator implements Comparator<Individual> {
 	

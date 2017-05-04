@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Collections;
+
 public abstract class Simulation {
 	protected Population populationP;
 	protected int kIterations; // licznik iteracji
@@ -10,5 +12,10 @@ public abstract class Simulation {
 	public abstract void firstGeneration();
 	public abstract void nextGeneration();
 	public abstract boolean checkFinish();
-	public abstract Individual runSimulation();
+	public abstract void runSimulation();
+	
+	public Individual selectBest(){
+		Collections.sort(populationP.getIndividuals(), new MyComparator());
+		return populationP.getIndividuals().get(0);
+	}
 }
