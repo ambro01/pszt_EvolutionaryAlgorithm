@@ -5,6 +5,7 @@ import java.util.Collections;
 
 public class MyRunnable implements Runnable{
 	private ArrayList<Individual> individuals;
+	private double [] results;
 	double sigma;
 	int iterations;
 	int mIterations;
@@ -22,17 +23,25 @@ public class MyRunnable implements Runnable{
 		this.c2 = c2;
 		this.iterations = it;
 		this.dimension = dimension;
+		results = new double[iterations];
+		results[results.length-1] = 100;
 	}
 
 	public void run() {
 		Simulation1Plus1 sim = new Simulation1Plus1(dimension, sigma, sigmaMin, iterations, mIterations, c1, c2);
 		sim.runSimulation();
+		if(results[results.length-1] > sim.getResults()[results.length-1])
+			results = sim.getResults();
 		individuals.add(sim.selectBest());
 	}
 	
 	public Individual selectBest(){
 		Collections.sort(individuals, new MyComparator());
 		return individuals.get(0);
+	}
+	
+	public double[] getResults(){
+		return results;
 	}
 
 }

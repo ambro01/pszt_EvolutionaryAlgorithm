@@ -22,6 +22,8 @@ public class Simulation1Plus1 extends Simulation{
 		super.dimension = dimension;
 		this.sigmaMin = sigmaMin;
 		super.iterationsLimit = it;
+		
+		super.results = new double[super.iterationsLimit];
 	}
 	
 	public void firstGeneration(){
@@ -30,13 +32,14 @@ public class Simulation1Plus1 extends Simulation{
 		Random r = new Random();
 		double x; 
 		
-		++kIterations;
-		
 		for(int i = 0; i < dimension; ++i){
 			x = Global.rangeMin + (Global.rangeMax - Global.rangeMin) * r.nextDouble();
 			gens.add(new Gen(x));
 		}
 		populationP.addIndividual(new Individual(gens));
+		
+		super.updateResultsArray();
+		++kIterations;
 	}
 	
 	public void nextGeneration(){
@@ -44,14 +47,15 @@ public class Simulation1Plus1 extends Simulation{
 		ArrayList<Gen> gens = new ArrayList<Gen>();
 		Random r = new Random();
 		
-		++kIterations;
-		
 		for(Gen gen : populationP.getIndividuals().getFirst().getGens()){
 			gens.add(new Gen(gen.getX() + this.sigma * r.nextGaussian())); 
 		}
 		
 		individualSecond = new Individual(gens);
 		selectBetterIndividual(individualSecond);
+		
+		super.updateResultsArray();
+		++kIterations;
 	}
 	
 	public void selectBetterIndividual(Individual individualSecond){

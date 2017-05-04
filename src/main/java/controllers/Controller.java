@@ -77,6 +77,7 @@ public class Controller implements Initializable{
 	
 	public void startButtonClicked(Event event) {
 		clearArea();
+		clearChart();
 		//addPointToChart(new Random().nextGaussian());	// only for testing chart
 		if (algorithmSelect.getSelectedToggle() == algorithm11) {
 			addTextLine("Wybrano algorytm równoleg³y 1+1");
@@ -92,9 +93,10 @@ public class Controller implements Initializable{
 			for(Gen gen : runnable.getMyRunnable().selectBest().getGens()){
 				addTextLine(String.valueOf(gen.getX()));
 			}
-			System.out.println(sigma_minSpinner11.getValue());
-			System.out.println(threadsNumSpinner11.getValue());
-			System.out.println(iterationsSpinner11.getValue());
+			
+			for(int i = 0; i < runnable.getMyRunnable().getResults().length; ++i){
+				addPointToChart(runnable.getMyRunnable().getResults()[i]);
+			}
 		}
 		
 		if (algorithmSelect.getSelectedToggle() == algorithmMiLambda) {
@@ -108,6 +110,10 @@ public class Controller implements Initializable{
 			addTextLine("Wartoœci zmiennych:");
 			for(Gen gen : simulation.selectBest().getGens()){
 				addTextLine(String.valueOf(gen.getX()));
+			}
+			
+			for(int i = 0; i < simulation.getResults().length; ++i){
+				addPointToChart(simulation.getResults()[i]);
 			}
 		}
 	}

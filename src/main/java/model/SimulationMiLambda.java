@@ -16,12 +16,12 @@ public class SimulationMiLambda extends Simulation{
 		this.lambda = lambda;
 		this.mi = mi;
 		super.iterationsLimit = it;
+		
+		super.results = new double[super.iterationsLimit];
 	}
-	
 	
 	public void firstGeneration(){
 		populationP = new Population();
-		++kIterations;
 		
 		for(int i = 0; i < mi; ++i){
 			ArrayList<Gen> gens = new ArrayList<Gen>();
@@ -34,6 +34,8 @@ public class SimulationMiLambda extends Simulation{
 			}
 			populationP.addIndividual(new Individual(gens));
 		}
+		updateResultsArray();
+		++kIterations;
 	}
 	
 	public void sortPopulation(Population p){
@@ -88,7 +90,6 @@ public class SimulationMiLambda extends Simulation{
 	}
 	
 	public void nextGeneration(){
-		kIterations++;
 		rankMethod();
 		selectLambdaIndividualsWithProbability();
 		crossing();
@@ -98,6 +99,8 @@ public class SimulationMiLambda extends Simulation{
 		for(int i = 0; i < mi; i++){
 			populationP.addIndividual(populationR.getIndividuals().get(i));
 		}
+		updateResultsArray();
+		kIterations++;
 	}
 	
 	public void crossing(){
@@ -137,5 +140,4 @@ public class SimulationMiLambda extends Simulation{
 			}
 		}
 	}
-	
 }
