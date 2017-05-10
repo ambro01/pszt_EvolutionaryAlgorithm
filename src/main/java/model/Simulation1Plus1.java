@@ -11,19 +11,19 @@ public class Simulation1Plus1 extends Simulation{
 	double c2;
 	double sigmaMin;
 	
-	public Simulation1Plus1(int dimension, double sigma0, double sigmaMin, int it, int m, double c1, double c2){
-		sigma_0 = sigma0;
-		sigma = sigma_0; // odchylenie standardowe
-		fi = 0; // liczba wybranych y-kow w ciagu ostatnich m iteracji
-		mIterations = m; // liczba iteracji po ktorych odbywa sie uaktualnienie wartosc sigmy
-		kIterations = 0; // kolejna iteracja
+	public Simulation1Plus1(Function function, double sigma0, double sigmaMin, int iterations, int m, double c1, double c2){
+		super(function, iterations, sigma0);
+		this.sigma = sigma_0; // odchylenie standardowe
+		this.fi = 0; // liczba wybranych y-kow w ciagu ostatnich m iteracji
+		this.mIterations = m; // liczba iteracji po ktorych odbywa sie uaktualnienie wartosc sigmy
 		this.c1 = c1; //czynnik modyfikujacy sigme
 		this.c2 = c2; // czynnik modyfikujacy sigme
-		super.dimension = dimension;
 		this.sigmaMin = sigmaMin;
-		super.iterationsLimit = it;
 		
-		super.results = new double[super.iterationsLimit];
+	}
+	
+	public double getSigma(){
+		return sigma;
 	}
 	
 	public void firstGeneration(){
@@ -32,8 +32,8 @@ public class Simulation1Plus1 extends Simulation{
 		Random r = new Random();
 		double x; 
 		
-		for(int i = 0; i < dimension; ++i){
-			x = Global.rangeMin + (Global.rangeMax - Global.rangeMin) * r.nextDouble();
+		for(int i = 0; i < super.myFunction.dimension; ++i){
+			x = super.myFunction.rangeMin + (super.myFunction.rangeMax - super.myFunction.rangeMin) * r.nextDouble();
 			gens.add(new Gen(x));
 		}
 		populationP.addIndividual(new Individual(gens));
@@ -59,7 +59,7 @@ public class Simulation1Plus1 extends Simulation{
 	}
 	
 	public void selectBetterIndividual(Individual individualSecond){
-		if(Global.minimalizeFunction(populationP.getIndividuals().getFirst(), dimension) < Global.minimalizeFunction(individualSecond, dimension))
+		if(super.myFunction.minimalizeFunction(populationP.getIndividuals().getFirst()) < super.myFunction.minimalizeFunction(individualSecond))
 			changeSigma();
 		else{
 			populationP.getIndividuals().removeFirst();
@@ -80,7 +80,7 @@ public class Simulation1Plus1 extends Simulation{
 	}
 	
 	public boolean checkFinish(){
-		if (sigma < sigmaMin || kIterations >= iterationsLimit)
+		if (sigma < sigmaMin || kIterations >= super.iterationsLimit)
 			return true;
 		else
 			return false;
@@ -88,15 +88,9 @@ public class Simulation1Plus1 extends Simulation{
 	
 	public void runSimulation(){
 		firstGeneration();
-		//System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
-		//System.out.println(this.individualFirst.getGens().get(0).getX());
 		do{
 			nextGeneration();
-			//System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
-			//System.out.println(this.individualFirst.getGens().get(0).getX());
 		} while(!checkFinish());
-		//population.getIndividuals().getFirst().setFinalFunctionValue(Global.minimalizeFunction(population.getIndividuals().getFirst(), dimension));
-		//System.out.println(kIterations + ": " + Global.minimalizeFunction(individualFirst, dimension));
 	}
 	
 }

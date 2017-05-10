@@ -4,8 +4,8 @@ public class MainRunnable {
 	MyRunnable myRunnable;
 	private int threadNumber;
 	
-	public MainRunnable(int dimension, double sigma0, double sigmaMin, int it, int m, double c1, double c2, int threadNumber){
-		myRunnable = new MyRunnable(dimension, sigma0, sigmaMin, it, m, c1, c2);
+	public MainRunnable(Function function, double sigma0, double sigmaMin, int it, int m, double c1, double c2, int threadNumber){
+		myRunnable = new MyRunnable(function, sigma0, sigmaMin, it, m, c1, c2);
 		this.threadNumber = threadNumber;
 	}
 	

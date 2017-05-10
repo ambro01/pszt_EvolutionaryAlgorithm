@@ -1,7 +1,7 @@
 package controllers;
 
 import java.net.URL;
-import java.util.Random;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
 import javafx.event.Event;
@@ -15,8 +15,9 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
+import model.Function;
+import model.FunctionF1;
 import model.Gen;
-import model.Individual;
 import model.MainRunnable;
 import model.SimulationMiLambda;
 
@@ -78,20 +79,23 @@ public class Controller implements Initializable{
 	public void startButtonClicked(Event event) {
 		clearArea();
 		clearChart();
-		//addPointToChart(new Random().nextGaussian());	// only for testing chart
+		DecimalFormat df = new DecimalFormat("0.###E0");
+		
 		if (algorithmSelect.getSelectedToggle() == algorithm11) {
 			addTextLine("Wybrano algorytm równoleg³y 1+1");
 			addTextLine("");
-			
-			MainRunnable runnable = new MainRunnable(nSpinner.getValue(), sigmaSpinner11.getValue(), sigma_minSpinner11.getValue(),
+			Function function = new FunctionF1(nSpinner.getValue(), -20, 20);
+			MainRunnable runnable = new MainRunnable(function, sigmaSpinner11.getValue(), sigma_minSpinner11.getValue(),
 					iterationsSpinner11.getValue(), mSpinner11.getValue(), c1Spinner11.getValue(), c2Spinner11.getValue(), threadsNumSpinner11.getValue());
 			runnable.run();
 			
-			addTextLine("Znalezione minimum globalne to wartoœæ: " + String.valueOf(runnable.getMyRunnable().selectBest().getFinalFunctionValue()));
+			addTextLine("Znalezione minimum globalne to wartoœæ: " + df.format(runnable.getMyRunnable().selectBest().getFinalFunctionValue()));
+			
+			addTextLine("Wartoœæ <sigma> dla najlepszego rozwi¹zania: " + df.format(runnable.getMyRunnable().getSigma()));
 			addTextLine("");
 			addTextLine("Wartoœci zmiennych:");
 			for(Gen gen : runnable.getMyRunnable().selectBest().getGens()){
-				addTextLine(String.valueOf(gen.getX()));
+				addTextLine(df.format(gen.getX()));
 			}
 			
 			for(int i = 0; i < runnable.getMyRunnable().getResults().length; ++i){
@@ -101,15 +105,15 @@ public class Controller implements Initializable{
 		
 		if (algorithmSelect.getSelectedToggle() == algorithmMiLambda) {
 			addTextLine("Wybrano algorytm Mi Lambda");
-			
-			SimulationMiLambda simulation = new SimulationMiLambda(nSpinner.getValue(), sigmaSpinnerMiLambda.getValue(), lambdaSpinnerMiLambda.getValue(), miSpinnerMiLambda.getValue(), iterationsSpinnerMiLambda.getValue());
+			Function function = new FunctionF1(nSpinner.getValue(), -20.0, 20.0);
+			SimulationMiLambda simulation = new SimulationMiLambda(function, sigmaSpinnerMiLambda.getValue(), lambdaSpinnerMiLambda.getValue(), miSpinnerMiLambda.getValue(), iterationsSpinnerMiLambda.getValue());
 			simulation.runSimulation();
 			
-			addTextLine("Znalezione minimum globalne to wartoœæ: " + String.valueOf(simulation.selectBest().getFinalFunctionValue()));
+			addTextLine("Znalezione minimum globalne to wartoœæ: " + df.format(simulation.selectBest().getFinalFunctionValue()));
 			addTextLine("");
 			addTextLine("Wartoœci zmiennych:");
 			for(Gen gen : simulation.selectBest().getGens()){
-				addTextLine(String.valueOf(gen.getX()));
+				addTextLine(df.format(gen.getX()));
 			}
 			
 			for(int i = 0; i < simulation.getResults().length; ++i){
@@ -118,14 +122,14 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	public void initialize(URL location, ResourceBundle resources) {
+	public void initialize(URL location, ResourceBundle resources) {		
 		delayTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100));
 		nSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100));
 		threadsNumSpinner11.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 100));
 		mSpinner11.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 10));
 		iterationsSpinner11.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1000));
 		sigmaSpinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 1, 0.01));
-		sigma_minSpinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 0.00001, 0.00001));
+		sigma_minSpinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1, 0.00001, 0.00001));
 		c1Spinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 0.82, 0.01));
 		c2Spinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 1.2, 0.01));
 		miSpinnerMiLambda.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 10));

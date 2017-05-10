@@ -10,14 +10,10 @@ public class SimulationMiLambda extends Simulation{
 	private Population populationT; // populacja tymczasowa lamda - elementowa
 	private Population populationR; // populucja potomna (po krzyzowaniu i mutacji) - lamda elementowa
 	
-	public SimulationMiLambda(int dimension, double sigma0, int lambda, int mi, int it){
-		this.dimension = dimension;
-		this.sigma_0 = sigma0;
+	public SimulationMiLambda(Function function, double sigma0, int lambda, int mi, int iterations){
+		super(function, iterations, sigma0);
 		this.lambda = lambda;
 		this.mi = mi;
-		super.iterationsLimit = it;
-		
-		super.results = new double[super.iterationsLimit];
 	}
 	
 	public void firstGeneration(){
@@ -27,9 +23,8 @@ public class SimulationMiLambda extends Simulation{
 			ArrayList<Gen> gens = new ArrayList<Gen>();
 			Random r = new Random();
 			double x; 
-			
-			for(int j = 0; j < dimension; ++j){
-				x = Global.rangeMin + (Global.rangeMax - Global.rangeMin) * r.nextDouble();
+			for(int j = 0; j < super.myFunction.dimension; ++j){
+				x = super.myFunction.rangeMin + (super.myFunction.rangeMax - super.myFunction.rangeMin) * r.nextDouble();
 				gens.add(new Gen(x, super.sigma_0));
 			}
 			populationP.addIndividual(new Individual(gens));
@@ -40,7 +35,7 @@ public class SimulationMiLambda extends Simulation{
 	
 	public void sortPopulation(Population p){
 		for(Individual individual : p.getIndividuals()){
-			Global.minimalizeFunction(individual, dimension);
+			super.myFunction.minimalizeFunction(individual);
 		}
 		Collections.sort(p.getIndividuals(), new MyComparator());
 	}	
@@ -75,20 +70,6 @@ public class SimulationMiLambda extends Simulation{
 		}
 	}
 	
-	public boolean checkFinish(){
-		if (kIterations >= iterationsLimit)
-			return true;
-		else
-			return false;
-	}
-	
-	public void runSimulation(){
-		firstGeneration();
-		do{
-			nextGeneration();
-		} while(!checkFinish());
-	}
-	
 	public void nextGeneration(){
 		rankMethod();
 		selectLambdaIndividualsWithProbability();
@@ -115,7 +96,7 @@ public class SimulationMiLambda extends Simulation{
 				second = populationT.getIndividuals().get(i+1);
 			
 			ArrayList<Gen> gens = new ArrayList<Gen>();
-			for(int j = 0; j < dimension; ++j){
+			for(int j = 0; j < super.myFunction.dimension; ++j){
 				gens.add(new Gen((first.getGens().get(j).getX() + second.getGens().get(j).getX())/2, (first.getGens().get(j).getSigma() + second.getGens().get(j).getSigma())/2));
 			}
 			populationR.addIndividual(new Individual(gens));
@@ -123,8 +104,8 @@ public class SimulationMiLambda extends Simulation{
 	}
 	
 	public void mutation(){
-		double tau = 1/Math.sqrt(2*dimension); // parametr mutacji
-		double tau_prim = 1/Math.sqrt(2*Math.sqrt(dimension)); // parametr mutacji
+		double tau = 1/Math.sqrt(2*super.myFunction.dimension); // parametr mutacji
+		double tau_prim = 1/Math.sqrt(2*Math.sqrt(super.myFunction.dimension)); // parametr mutacji
 		Random r = new Random();
 		double ksi; // zmienna losowa o tej samej wartosci dla kazdego wymiaru
 		double ksi_i; // zmienna losowa niezalezna dla kazdego wymiaru
@@ -139,5 +120,19 @@ public class SimulationMiLambda extends Simulation{
 				gen.setX(gen.getX() + gen.getSigma()*r.nextGaussian());
 			}
 		}
+	}
+	
+	public boolean checkFinish(){
+		if (kIterations >= iterationsLimit)
+			return true;
+		else
+			return false;
+	}
+	
+	public void runSimulation(){
+		firstGeneration();
+		do{
+			nextGeneration();
+		} while(!checkFinish());
 	}
 }
