@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -22,10 +23,10 @@
             <TextArea fx:id="populationTA" editable="false" layoutX="29.0" layoutY="32.0" prefHeight="270.0" prefWidth="664.0" />
             <LineChart fx:id="fitnessChart" animated="false" createSymbols="false" disable="true" layoutX="29.0" layoutY="320.0" legendVisible="false" prefHeight="300.0" prefWidth="1081.0" title="Wartość funkcji przystosowania">
               <xAxis>
-                <NumberAxis side="BOTTOM" />
+                <NumberAxis label="k iteration" side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis autoRanging="false" lowerBound="-20.0" pickOnBounds="false" side="LEFT" upperBound="10.0" />
+                <NumberAxis autoRanging="false" label="log y" lowerBound="-20.0" pickOnBounds="false" side="LEFT" upperBound="10.0" />
               </yAxis>
             </LineChart>
             <Button layoutX="1016.0" layoutY="634.0" mnemonicParsing="false" onMouseClicked="#startButtonClicked" prefHeight="25.0" prefWidth="94.0" text="Start" />
@@ -62,8 +63,8 @@
                                     <Spinner fx:id="c2Spinner11" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     <Label text="σ_min" GridPane.rowIndex="3" />
                                     <Label text="iterations" GridPane.rowIndex="6" />
-                                    <Spinner fx:id="sigma_minSpinner11" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Spinner fx:id="iterationsSpinner11" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <TextField fx:id="minSigma11" maxWidth="86.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                  </children>
                               </GridPane>
                               <Spinner fx:id="delayTimeSpinner2" editable="true" layoutX="757.0" layoutY="644.0" prefHeight="25.0" prefWidth="86.0" />

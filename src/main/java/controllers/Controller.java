@@ -15,6 +15,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import model.Function;
 import model.FunctionF1;
@@ -38,8 +39,6 @@ public class Controller implements Initializable{
 	@FXML
 	Spinner<Double> sigmaSpinner11;
 	@FXML
-	Spinner<Double> sigma_minSpinner11;
-	@FXML
 	Spinner<Integer> iterationsSpinner11;
 	@FXML
 	Spinner<Double> c1Spinner11;
@@ -55,8 +54,10 @@ public class Controller implements Initializable{
 	Spinner<Integer> iterationsSpinnerMiLambda;
 	@FXML
 	LineChart<Number, Number> fitnessChart;
-	
+	@FXML
 	ToggleGroup algorithmSelect;
+	@FXML
+	TextField minSigma11;
 	
 	public void addTextLine(String text) {
 		populationTA.setText(populationTA.getText() + "\n" + text);
@@ -86,7 +87,15 @@ public class Controller implements Initializable{
 			addTextLine("Wybrano algorytm równoleg³y 1+1");
 			addTextLine("");
 			Function function = new FunctionF1(nSpinner.getValue(), -20, 20);
-			MainRunnable runnable = new MainRunnable(function, sigmaSpinner11.getValue(), sigma_minSpinner11.getValue(),
+			double tempSigmaMin = 0;
+			try{
+				tempSigmaMin = Double.parseDouble(minSigma11.getText());
+			} catch (NumberFormatException e){
+				e.printStackTrace(); //prints error
+				minSigma11.setText("0");
+			};
+					
+			MainRunnable runnable = new MainRunnable(function, sigmaSpinner11.getValue(), tempSigmaMin,
 					iterationsSpinner11.getValue(), mSpinner11.getValue(), c1Spinner11.getValue(), c2Spinner11.getValue(), threadsNumSpinner11.getValue());
 			runnable.run();
 			
@@ -155,13 +164,13 @@ public class Controller implements Initializable{
 		mSpinner11.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 10));
 		iterationsSpinner11.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1000));
 		sigmaSpinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 1, 0.01));
-		sigma_minSpinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1, 0.0001, 0.00001));
 		c1Spinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 0.82, 0.01));
 		c2Spinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 1.2, 0.01));
 		miSpinnerMiLambda.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 10));
 		lambdaSpinnerMiLambda.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 70));
 		sigmaSpinnerMiLambda.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 1, 0.01));
 		iterationsSpinnerMiLambda.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1000));
+		minSigma11.setText(String.valueOf(0.0001));
 		algorithmSelect = new ToggleGroup();
 		algorithm11.setToggleGroup(algorithmSelect);
 		algorithmMiLambda.setToggleGroup(algorithmSelect);
