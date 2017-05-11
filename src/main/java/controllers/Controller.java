@@ -8,6 +8,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.RadioButton;
@@ -28,8 +29,6 @@ public class Controller implements Initializable{
 	RadioButton algorithm11;
 	@FXML
 	RadioButton algorithmMiLambda;
-	@FXML 
-	Spinner<Integer> delayTimeSpinner;
 	@FXML
 	Spinner<Integer> nSpinner;
 	@FXML
@@ -55,7 +54,7 @@ public class Controller implements Initializable{
 	@FXML
 	Spinner<Integer> iterationsSpinnerMiLambda;
 	@FXML
-	LineChart<Integer, Double> fitnessChart;
+	LineChart<Number, Number> fitnessChart;
 	
 	ToggleGroup algorithmSelect;
 	
@@ -69,7 +68,7 @@ public class Controller implements Initializable{
 	
 	public void addPointToChart(double value) {
 		int x = fitnessChart.getData().get(0).getData().size();
-		fitnessChart.getData().get(0).getData().add(new Data<Integer, Double>(x, value));
+		fitnessChart.getData().get(0).getData().add(new Data<Number, Number>(x, value));
 	}
 
 	public void clearChart() {
@@ -80,6 +79,8 @@ public class Controller implements Initializable{
 		clearArea();
 		clearChart();
 		DecimalFormat df = new DecimalFormat("0.###E0");
+		double min = -1;
+		double max = 0;
 		
 		if (algorithmSelect.getSelectedToggle() == algorithm11) {
 			addTextLine("Wybrano algorytm równoleg³y 1+1");
@@ -94,12 +95,24 @@ public class Controller implements Initializable{
 			addTextLine("Wartoœæ <sigma> dla najlepszego rozwi¹zania: " + df.format(runnable.getMyRunnable().getSigma()));
 			addTextLine("");
 			addTextLine("Wartoœci zmiennych:");
+			int k = 0;
 			for(Gen gen : runnable.getMyRunnable().selectBest().getGens()){
-				addTextLine(df.format(gen.getX()));
+				++k;
+				addTextLine(k + ". " + df.format(gen.getX()));
 			}
 			
-			for(int i = 0; i < runnable.getMyRunnable().getResults().length; ++i){
-				addPointToChart(runnable.getMyRunnable().getResults()[i]);
+			double temp = 0;
+			for(int i = 0; i < runnable.getMyRunnable().getKIterations(); ++i){
+				if(runnable.getMyRunnable().getResults()[i] != 0){
+					temp = Math.log10(runnable.getMyRunnable().getResults()[i]);
+					addPointToChart(temp);
+					if (temp > max)
+						max = temp;
+					if (temp < min)
+						min = temp;
+				} else {
+					addPointToChart(min);
+				}
 			}
 		}
 		
@@ -112,24 +125,37 @@ public class Controller implements Initializable{
 			addTextLine("Znalezione minimum globalne to wartoœæ: " + df.format(simulation.selectBest().getFinalFunctionValue()));
 			addTextLine("");
 			addTextLine("Wartoœci zmiennych:");
+			int k = 0;
 			for(Gen gen : simulation.selectBest().getGens()){
-				addTextLine(df.format(gen.getX()));
+				++k;
+				addTextLine(k + ". " + df.format(gen.getX()));
 			}
 			
-			for(int i = 0; i < simulation.getResults().length; ++i){
-				addPointToChart(simulation.getResults()[i]);
+			double temp = 0;
+			for(int i = 0; i < simulation.getKIeterations(); ++i){
+				if(simulation.getResults()[i] != 0){
+					temp = Math.log10(simulation.getResults()[i]);
+					addPointToChart(temp);
+					if (temp > max)
+						max = temp;
+					if (temp < min)
+						min = temp;
+				} else {
+					addPointToChart(min);
+				}
 			}
 		}
+		((NumberAxis) fitnessChart.getYAxis()).setLowerBound((int)min - 1);
+		((NumberAxis) fitnessChart.getYAxis()).setUpperBound((int)max + 1);
 	}
 	
 	public void initialize(URL location, ResourceBundle resources) {		
-		delayTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100));
 		nSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100));
 		threadsNumSpinner11.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 100));
 		mSpinner11.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 10));
 		iterationsSpinner11.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1000));
 		sigmaSpinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 1, 0.01));
-		sigma_minSpinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1, 0.00001, 0.00001));
+		sigma_minSpinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1, 0.0001, 0.00001));
 		c1Spinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 0.82, 0.01));
 		c2Spinner11.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 1000, 1.2, 0.01));
 		miSpinnerMiLambda.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 10));
@@ -140,6 +166,6 @@ public class Controller implements Initializable{
 		algorithm11.setToggleGroup(algorithmSelect);
 		algorithmMiLambda.setToggleGroup(algorithmSelect);
 		algorithmSelect.selectToggle(algorithm11);
-		fitnessChart.getData().add(new Series<Integer, Double>());
+		fitnessChart.getData().add(new Series<Number, Number>());
 	}
 }

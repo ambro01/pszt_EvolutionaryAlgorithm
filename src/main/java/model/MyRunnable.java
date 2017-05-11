@@ -7,13 +7,15 @@ public class MyRunnable implements Runnable{
 	private ArrayList<Individual> individuals;
 	private double [] results;
 	private Function function;
-	double sigma;
-	int iterations;
-	int mIterations;
-	double c1;
-	double c2;
-	double sigmaMin;
-	double resultSigma;
+	private double sigma;
+	private int iterations;
+	private int mIterations;
+	private double c1;
+	private double c2;
+	private double sigmaMin;
+	private double resultSigma;
+	private int kIterations;
+	private double bestValue;
 	
 	public MyRunnable(Function function, double sigma0, double sigmaMin, int it, int m, double c1, double c2){
 		this.function = function;
@@ -25,18 +27,25 @@ public class MyRunnable implements Runnable{
 		this.c2 = c2;
 		this.iterations = it;
 		this.results = new double[iterations];
-		this.results[results.length-1] = 100;
+		this.results[results.length-1] = 10;
 		this.resultSigma = sigma0;
+		this.kIterations = 0;
+		this.bestValue = 1;
 	}
 
 	public void run() {
 		Simulation1Plus1 sim = new Simulation1Plus1(function, sigma, sigmaMin, iterations, mIterations, c1, c2);
 		sim.runSimulation();
-		if(results[results.length-1] > sim.getResults()[results.length-1]){
-			results = sim.getResults();
-			resultSigma = sim.getSigma();
-		}
 		individuals.add(sim.selectBest());
+		synchronized ((Double) bestValue) {
+			if(sim.selectBest().getFinalFunctionValue() < bestValue){
+				bestValue = sim.selectBest().getFinalFunctionValue();
+				results = sim.getResults();
+				resultSigma = sim.getSigma();
+				kIterations = sim.getKIeterations();
+			}
+		}
+
 	}
 	
 	public Individual selectBest(){
@@ -50,6 +59,10 @@ public class MyRunnable implements Runnable{
 	
 	public double getSigma(){
 		return resultSigma;
+	}
+	
+	public int getKIterations(){
+		return kIterations;
 	}
 
 }

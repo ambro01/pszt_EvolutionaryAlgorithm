@@ -3,7 +3,6 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
@@ -21,17 +20,15 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="482.0" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
             <TextArea fx:id="populationTA" editable="false" layoutX="29.0" layoutY="32.0" prefHeight="270.0" prefWidth="664.0" />
-            <Label layoutX="29.0" layoutY="14.0" text="Populacja:" />
-            <LineChart fx:id="fitnessChart" animated="false" layoutX="29.0" layoutY="320.0" prefHeight="300.0" prefWidth="1081.0" title="Wartość funkcji przystosowania">
+            <LineChart fx:id="fitnessChart" animated="false" createSymbols="false" disable="true" layoutX="29.0" layoutY="320.0" legendVisible="false" prefHeight="300.0" prefWidth="1081.0" title="Wartość funkcji przystosowania">
               <xAxis>
                 <NumberAxis side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis autoRanging="false" lowerBound="-20.0" pickOnBounds="false" side="LEFT" upperBound="10.0" />
               </yAxis>
             </LineChart>
             <Button layoutX="1016.0" layoutY="634.0" mnemonicParsing="false" onMouseClicked="#startButtonClicked" prefHeight="25.0" prefWidth="94.0" text="Start" />
-            <CheckBox layoutX="868.0" layoutY="638.0" mnemonicParsing="false" text="Pokazuj na bieżąco" />
             <TabPane layoutX="715.0" layoutY="61.0" prefHeight="210.0" prefWidth="389.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab fx:id="algorythmTab" text="(1+1) równoległy">
@@ -106,8 +103,6 @@
                 </Tab>
               </tabs>
             </TabPane>
-            <Spinner fx:id="delayTimeSpinner" editable="true" layoutX="747.0" layoutY="634.0" prefHeight="25.0" prefWidth="86.0">
-            </Spinner>
             <RadioButton fx:id="algorithm11" layoutX="715.0" layoutY="24.0" mnemonicParsing="false" text="(1+1) równoległy" />
             <RadioButton fx:id="algorithmMiLambda" layoutX="837.0" layoutY="24.0" mnemonicParsing="false" text="algorytm (µ,λ)" />
             <Spinner fx:id="nSpinner" editable="true" layoutX="843.0" layoutY="277.0" prefHeight="25.0" prefWidth="86.0" />

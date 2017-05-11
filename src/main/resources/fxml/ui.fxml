@@ -20,13 +20,12 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="482.0" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
             <TextArea fx:id="populationTA" editable="false" layoutX="29.0" layoutY="32.0" prefHeight="270.0" prefWidth="664.0" />
-            <Label layoutX="29.0" layoutY="14.0" text="Populacja:" />
-            <LineChart fx:id="fitnessChart" animated="false" layoutX="29.0" layoutY="320.0" prefHeight="300.0" prefWidth="1081.0" title="Wartość funkcji przystosowania">
+            <LineChart fx:id="fitnessChart" animated="false" createSymbols="false" disable="true" layoutX="29.0" layoutY="320.0" legendVisible="false" prefHeight="300.0" prefWidth="1081.0" title="Wartość funkcji przystosowania">
               <xAxis>
                 <NumberAxis side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis autoRanging="false" lowerBound="-20.0" pickOnBounds="false" side="LEFT" upperBound="10.0" />
               </yAxis>
             </LineChart>
             <Button layoutX="1016.0" layoutY="634.0" mnemonicParsing="false" onMouseClicked="#startButtonClicked" prefHeight="25.0" prefWidth="94.0" text="Start" />

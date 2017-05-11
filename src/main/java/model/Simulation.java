@@ -35,4 +35,8 @@ public abstract class Simulation {
 	public double [] getResults(){
 		return results;
 	}
+	
+	public int getKIeterations(){
+		return kIterations;
+	}
 }
