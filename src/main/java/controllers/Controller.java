@@ -90,13 +90,13 @@ public class Controller implements Initializable{
 					iterationsSpinner11.getValue(), mSpinner11.getValue(), c1Spinner11.getValue(), c2Spinner11.getValue(), threadsNumSpinner11.getValue());
 			runnable.run();
 			
-			addTextLine("Znalezione minimum globalne to wartoœæ: " + df.format(runnable.getMyRunnable().selectBest().getFinalFunctionValue()));
+			addTextLine("Znalezione minimum globalne to wartoœæ: " + df.format(runnable.getMyRunnable().getBestIndividual().getFinalFunctionValue()));
 			
 			addTextLine("Wartoœæ <sigma> dla najlepszego rozwi¹zania: " + df.format(runnable.getMyRunnable().getSigma()));
 			addTextLine("");
 			addTextLine("Wartoœci zmiennych:");
 			int k = 0;
-			for(Gen gen : runnable.getMyRunnable().selectBest().getGens()){
+			for(Gen gen : runnable.getMyRunnable().getBestIndividual().getGens()){
 				++k;
 				addTextLine(k + ". " + df.format(gen.getX()));
 			}

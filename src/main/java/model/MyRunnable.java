@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MyRunnable implements Runnable{
-	private ArrayList<Individual> individuals;
+	private Individual individual;
 	private double [] results;
 	private Function function;
 	private double sigma;
@@ -19,7 +19,7 @@ public class MyRunnable implements Runnable{
 	
 	public MyRunnable(Function function, double sigma0, double sigmaMin, int it, int m, double c1, double c2){
 		this.function = function;
-		this.individuals = new ArrayList<Individual>();
+		this.individual = null;
 		this.sigmaMin = sigmaMin;
 		this.sigma = sigma0;
 		this.mIterations = m;
@@ -36,9 +36,9 @@ public class MyRunnable implements Runnable{
 	public void run() {
 		Simulation1Plus1 sim = new Simulation1Plus1(function, sigma, sigmaMin, iterations, mIterations, c1, c2);
 		sim.runSimulation();
-		individuals.add(sim.selectBest());
 		synchronized ((Double) bestValue) {
 			if(sim.selectBest().getFinalFunctionValue() < bestValue){
+				individual = sim.selectBest();
 				bestValue = sim.selectBest().getFinalFunctionValue();
 				results = sim.getResults();
 				resultSigma = sim.getSigma();
@@ -48,9 +48,8 @@ public class MyRunnable implements Runnable{
 
 	}
 	
-	public Individual selectBest(){
-		Collections.sort(individuals, new MyComparator());
-		return individuals.get(0);
+	public Individual getBestIndividual(){
+		return individual;
 	}
 	
 	public double[] getResults(){
