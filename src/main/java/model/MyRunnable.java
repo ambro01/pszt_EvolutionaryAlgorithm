@@ -1,8 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class MyRunnable implements Runnable{
 	private Individual individual;
 	private double [] results;
@@ -27,10 +24,10 @@ public class MyRunnable implements Runnable{
 		this.c2 = c2;
 		this.iterations = it;
 		this.results = new double[iterations];
-		this.results[results.length-1] = 10;
+		this.results[results.length-1] = it;
 		this.resultSigma = sigma0;
 		this.kIterations = 0;
-		this.bestValue = 1;
+		this.bestValue = it;
 	}
 
 	public void run() {

@@ -92,7 +92,7 @@
                                     <Label text="λ" GridPane.rowIndex="1" />
                                     <Spinner fx:id="miSpinnerMiLambda" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" />
                                     <Spinner fx:id="lambdaSpinnerMiLambda" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="σ_0" GridPane.rowIndex="2" />
+                                    <Label text="σ" GridPane.rowIndex="2" />
                                     <Label text="iterations" GridPane.rowIndex="3" />
                                     <Spinner fx:id="sigmaSpinnerMiLambda" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Spinner fx:id="iterationsSpinnerMiLambda" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />

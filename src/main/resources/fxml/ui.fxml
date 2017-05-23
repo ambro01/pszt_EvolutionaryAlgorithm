@@ -16,12 +16,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="700.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Controller">
+<VBox prefHeight="700.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="482.0" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
             <TextArea fx:id="populationTA" editable="false" layoutX="29.0" layoutY="32.0" prefHeight="270.0" prefWidth="664.0" />
-            <LineChart fx:id="fitnessChart" animated="false" createSymbols="false" disable="true" layoutX="29.0" layoutY="320.0" legendVisible="false" prefHeight="300.0" prefWidth="1081.0" title="Wartość funkcji przystosowania">
+            <LineChart fx:id="fitnessChart" animated="false" createSymbols="false" disable="true" layoutX="29.0" layoutY="320.0" legendVisible="false" prefHeight="300.0" prefWidth="1081.0" title="Wartość funkcji w skali logarytmicznej">
               <xAxis>
                 <NumberAxis label="k iteration" side="BOTTOM" />
               </xAxis>
@@ -53,7 +53,7 @@
                                  <children>
                                     <Label text="Liczba wątków" />
                                     <Label text="m" GridPane.rowIndex="1" />
-                                    <Label text="σ" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                                    <Label prefWidth="50.0" text="σ_0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                                     <Label text="c1" GridPane.rowIndex="4" />
                                     <Label text="c2" GridPane.rowIndex="5" />
                                     <Spinner fx:id="threadsNumSpinner11" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" />
@@ -92,7 +92,7 @@
                                     <Label text="λ" GridPane.rowIndex="1" />
                                     <Spinner fx:id="miSpinnerMiLambda" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" />
                                     <Spinner fx:id="lambdaSpinnerMiLambda" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="σ" GridPane.rowIndex="2" />
+                                    <Label text="σ_0" GridPane.rowIndex="2" />
                                     <Label text="iterations" GridPane.rowIndex="3" />
                                     <Spinner fx:id="sigmaSpinnerMiLambda" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Spinner fx:id="iterationsSpinnerMiLambda" editable="true" prefHeight="25.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
