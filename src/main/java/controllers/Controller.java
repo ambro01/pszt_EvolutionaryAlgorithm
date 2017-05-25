@@ -149,8 +149,6 @@ public class Controller implements Initializable{
 						max = temp;
 					if (temp < min)
 						min = temp;
-				} else {
-					addPointToChart(min);
 				}
 			}
 		}
